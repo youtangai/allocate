@@ -2,42 +2,37 @@
 #include<stdlib.h>
 #include<unistd.h>
 
-#define NUM (8192)
+#define NUM (1024)
+#define UPPER (1024*1024*1024)
 
 void fill(unsigned int n, int *p) {
-  for (unsigned int i = n-NUM; i < n; i++) {
-    p[i] = 1;
-  }
+    for (unsigned int i = n - NUM; i < n; i++) {
+        p[i] = 4294967295;//all bit true
+    }
 }
 
 int main(void) {
 
     unsigned int n = NUM;
-    unsigned int upper = 1024 * 1024 * 1024;
-    int *p;
-    int *q;
+    int *p, *q;
 
     if ((p = (int *)malloc(n*sizeof(int))) == NULL){
-        printf("mallocできません\n");
+        printf("cant malloc\n");
         exit(EXIT_FAILURE);
     }
 
     fill(n, p);
     
-    while(1) {
-      usleep(1);
-        n += NUM;
-        if (n > upper)
-            break;
+    for (; n <= UPPER; n += NUM) {
         if ((q = (int *)realloc(p, n*sizeof(int))) == NULL) {
-            printf("reallocできません\n");
+            printf("cant realloc\n");
             free(p);
             exit(EXIT_FAILURE);
         }
         p = q;
-	fill(n, p);
+	    fill(n, p);
     }
+
     free(p);
-    printf("finish!!\n");
     return 0;
 }
