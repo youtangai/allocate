@@ -23,14 +23,14 @@ int main(void) {
 
     fill(n, p);
     
-    for (; n <= UPPER; n += NUM) {
+    for (n = n+NUM; n <= UPPER; n += NUM) {
         if ((q = (int *)realloc(p, n*sizeof(int))) == NULL) {
             printf("cant realloc\n");
             free(p);
             exit(EXIT_FAILURE);
         }
         p = q;
-	    fill(n, p);
+	fill(n, p);
     }
 
     free(p);
