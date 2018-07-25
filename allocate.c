@@ -1,38 +1,25 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<unistd.h>
+#include<time.h>
 
-#define NUM (1024)
-#define UPPER (1024*1024*1024)
-
-void fill(unsigned int n, int *p) {
-    for (unsigned int i = n - NUM; i < n; i++) {
-        p[i] = 4294967295;//all bit true
-    }
-}
+#define MAX (1024*1024*1024)
 
 int main(void) {
-
-    unsigned int n = NUM;
-    int *p, *q;
-
-    if ((p = (int *)malloc(n*sizeof(int))) == NULL){
-        printf("cant malloc\n");
-        exit(EXIT_FAILURE);
-    }
-
-    fill(n, p);
+  clock_t start = clock();
+  unsigned long *p;
+  int i;
     
-    for (n = n+NUM; n <= UPPER; n += NUM) {
-        if ((q = (int *)realloc(p, n*sizeof(int))) == NULL) {
-            printf("cant realloc\n");
-            free(p);
-            exit(EXIT_FAILURE);
-        }
-        p = q;
-	fill(n, p);
-    }
+  if ((p = (unsigned long *)malloc(MAX*sizeof(unsigned long))) == NULL){
+    printf("cant malloc\n");
+    exit(EXIT_FAILURE);
+  }
 
-    free(p);
-    return 0;
+  for (i = 0; i < MAX; i++) {
+    p[i] = 4294967295;
+  }
+  
+  clock_t end = clock();
+  printf("spent\ttime\t%ld\tms\n", end-start);
+  return 0;
 }
